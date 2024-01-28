@@ -1,2 +1,3 @@
 matplotlib
+ntlk
 bangla-stemmer
