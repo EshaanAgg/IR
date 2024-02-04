@@ -35,7 +35,7 @@ def get_stemmed_count(folder_path):
     print(f"Unique stemmed words: {len(stemmed_word_list)}")
 
 
-folder_path = os.path.join(os.getcwd(), "data/bengaliNews")
+folder_path = os.path.join(os.getcwd(), "data/bengali")
 if os.path.exists(folder_path) and os.path.isdir(folder_path):
     get_stemmed_count(folder_path)
 else:
