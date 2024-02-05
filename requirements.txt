@@ -1,3 +1,4 @@
 matplotlib
-ntlk
+nltk
+bltk
 bangla-stemmer

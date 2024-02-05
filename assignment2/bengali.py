@@ -1,39 +1,30 @@
 import os
 import glob
 import json
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer
+from bltk.langtools import Tokenizer, remove_stopwords
+from bangla_stemmer.stemmer import stemmer
 from collections import defaultdict
 
-# Download the NLTK data for tokenization and stopwords
-import nltk
+tokenizer = Tokenizer()
+stemmer = stemmer.BanglaStemmer()
 
-nltk.download("punkt")
-nltk.download("stopwords")
-
-english_folder_path = os.path.join(os.getcwd(), "data/english")
+bengali_folder_path = os.path.join(os.getcwd(), "data/bengali")
 file_paths = [
     f
-    for f in glob.glob(os.path.join(english_folder_path, "**"), recursive=True)
+    for f in glob.glob(os.path.join(bengali_folder_path, "**"), recursive=True)
     if os.path.isfile(f)
 ]
-english_documents = []
+bengali_documents = []
 for file_path in file_paths:
     with open(file_path, "r", encoding="utf-8", errors="ignore") as file:
-        english_documents.append(file.read())
-document_count = len(english_documents)
+        bengali_documents.append(file.read())
+document_count = len(bengali_documents)
 
 
 def preprocess_document(document):
-    tokens = word_tokenize(document.lower())
-
-    stop_words = set(stopwords.words("english"))
-    tokens = [token for token in tokens if token.isalnum() and token not in stop_words]
-
-    porter_stemmer = PorterStemmer()
-    tokens = [porter_stemmer.stem(token) for token in tokens]
-
+    tokens = tokenizer.word_tokenizer(document)
+    tokens = remove_stopwords(tokens)
+    tokens = [stemmer.stem(token) for token in tokens]
     return tokens
 
 
@@ -67,21 +58,21 @@ def boolean_retrieval(query, index):
 
 
 def write_index(index):
-    with open("data/eng_index", "w") as file:
+    with open("data/ben_index", "w") as file:
         file.write(json.dumps(index))
 
 
 def load_index():
-    with open("data/eng_index", "r") as file:
+    with open("data/ben_index", "r") as file:
         return json.loads(file.read())
 
 
 index = None
 # Use the index if it exists, otherwise create the index
-if os.path.exists("data/eng_index"):
+if os.path.exists("data/ben_index"):
     index = load_index()
 else:
-    preprocessed_documents = [preprocess_document(doc) for doc in english_documents]
+    preprocessed_documents = [preprocess_document(doc) for doc in bengali_documents]
     index = create_index(preprocessed_documents)
     write_index(index)
 
@@ -108,5 +99,5 @@ while True:
 
     # Display the middle content of atmax 5 documents
     for doc_id in result_documents[:5]:
-        print(f"Document {doc_id + 1}: {english_documents[doc_id][100:200]}...")
+        print(f"Document {doc_id + 1}: {bengali_documents[doc_id][100:200]}...")
         print()

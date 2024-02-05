@@ -22,4 +22,4 @@ This repository contains all the relevant scripts and code for the course `IR: I
 
 1. Please ensure that you have downloaded the unzipped datasets in a `data` directory with the name of the language that you want to analyse in the code.
 2. Install the required required dependencies with `pip install -r requirements.txt`
-3. Run the code file that you want to reanlyze from the root of the project. For example, `python assignment2/english.py`.
+3. Run the code file for the particular assignment from the root of the project. For example, `python assignment2/english.py`.
