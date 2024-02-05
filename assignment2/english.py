@@ -106,7 +106,12 @@ while True:
     result_documents = list(boolean_retrieval(query, index))
     print(f"Number of documents retrieved: {len(result_documents)}")
 
-    # Display the middle content of atmax 5 documents
+    # Display the matched content of atmax 5 documents
     for doc_id in result_documents[:5]:
-        print(f"Document {doc_id + 1}: {english_documents[doc_id][100:200]}...")
-        print()
+        lines = english_documents[doc_id].split("\n")
+        for line in lines:
+            words = line.split()
+            if len(set(words).intersection(set(query.split()))) != 0:
+                print("Document ID:", doc_id)
+                print(f"Content: ...{line}...\n")
+                break
